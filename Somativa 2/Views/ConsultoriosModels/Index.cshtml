@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Somativa_2.Models.ConsultoriosModel>
+
+@{
+    ViewData["Title"] = "Index"; 
+
+    List<ConsultoriosModel> Consultorios = new List<ConsultoriosModel>();
+    Consultorios.Add(new ConsultoriosModel { ConsultorioId = new Guid(), Especialidade = "Todas" });
+    var categ = ViewData["Categ"] as List<ConsultoriosModel>;
+
+    foreach (var item in Model)
+    {
+        Consultorios.Add(new ConsultoriosModel { ConsultorioId = item.ConsultorioId, Especialidade = item.Especialidade });
+    }
+}
+
+<div style=" position:relative; height:750px;">
+    <img src="/img/heroCon.png" style="margin-left:-130px;margin-top:-25px; height: 755px;position: absolute;" />
+    <div class="container col-xxl-8 px-4 py-5" style="position:relative;left:100px;">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+            <div class="col-lg-10" style="margin-top:150px">
+                <h1 class="display-3 fw-bold text-body-emphasis lh-1 mb-3 text-white">MARQUE SUA CONSULTA MÉDICA ONLINE</h1>
+                <p class="lead text-white">
+                    Um amanhã mais saudável começa hoje: Agende sua consulta!
+                    Seu bem-estar, nossa experiência: marque sua consulta hoje mesmo.
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Agende sua Consulta</button>
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 me-md-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+                        </svg> Deixe seu Feedback
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+            <img src="@Url.Action("GetImage", "Relatorio", new { imageName = "imagem.png" })" alt="Descrição da imagem">
+            -->
+<form>
+    <div id="filtros " class="d-flex">
+        <button asp-action="SearchProd" class="btn text-white " style="background-color:darkblue">Filtrar</button>
+        <select name="inCategoria" class="form-select col-6">
+            @foreach (var item in Model)
+            {
+                <option value="@item.ConsultorioId">@item.Especialidade</option>
+            }
+            
+
+        </select>
+        
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Endereco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Especialidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Endereco)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Especialidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ConsultorioId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ConsultorioId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ConsultorioId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Somativa_2.Models.PlanodeSaudeModel>
+
+@{
+	ViewData["Title"] = "Index";
+}
+<div style="margin-left:-40px;">
+	<h1 style="text-align:center; background-color:#C7DAEF;color:#001C42;margin-left:-80px;width:1540px;height:55px">Planos de Saude Disponiveis </h1>
+	<h5 style="text-align:center;">Apresentamos mais de 5 planos de saúde para que possa escolher o que mais te agrada!</h5>
+<p>
+	<a asp-action="Create" class="btn btn-primary m-3" >Criar Novo</a>
+</p>
+<div class=" d-flex" style="flex-wrap:wrap; width:1500px;"  >
+@foreach (var item in Model)
+{
+		<div class="card mb-3 m-2 " style="width: 450px;border-radius:30px">
+			<div class="row g-2 d-flex">
+				<div class="col-md-5">
+					<img src="~/img/@item.img" alt="Imagem da Notícia" style="width: 100%; height:100% ;border-radius:10px" />
+				</div>
+				<div class="col-md-8" style="width:195px;">
+					<div class="card-body">
+						<h2 class="card-title">@Html.DisplayFor(modelItem => item.Nome)</h2>
+						<p class="card-text " style="height:5px;color:gray">TELEFONE: @Html.DisplayFor(modelItem => item.Telefone)</p>
+						<p class="card-text" style="height:5px;color:gray ">EMAIL: @Html.DisplayFor(modelItem => item.Email)</p>
+					</div>
+					<div class="d-flex justify-content-center " style="margin-top:30px; width:210px">
+						<div class="m-2">
+							<a asp-action="Edit" asp-route-id="@item.PlanodeSaudeId">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+									<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+									<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+								</svg>
+							</a>
+						</div>
+						<div class="m-2">
+							<a asp-action="Details" asp-route-id="@item.PlanodeSaudeId">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="25" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
+									<path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />
+								</svg>
+							</a>
+						</div>
+						<div class="m-2">
+							<a asp-action="Delete" asp-route-id="@item.PlanodeSaudeId">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="25" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+									<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+								</svg>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+}
+</div>
+</div>

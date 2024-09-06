@@ -1,0 +1,63 @@
+﻿@model Somativa_2.Models.PlanodeSaudeModel
+
+@{
+	ViewData["Title"] = "Delete";
+}
+
+<h2 class="d-flex" style="justify-content:center; padding:25px">Você Deseja Deletar Essa Pagina ?</h2>
+
+
+
+
+<div class="row">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input type="hidden" asp-for="PlanodeSaudeId" />
+
+	<div class="d-flex justify-content-center" style="width: 2000px; height:250px;">
+		<img src="~/img/@Model.img" alt="Imagem da Notícia" style="width: 200px ; height:200px ;border-radius:10px" />
+	</div>
+
+	<div class="d-flex justify-content-center">
+		<form asp-action="Create" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="d-flex m-2" style="width:1150px;">
+				<div class="form-group w-50 m-2">
+					<label asp-for="Nome" class="control-label"></label>
+					<input asp-for="Nome" class="form-control" readonly style="height:40px" />
+					<span asp-validation-for="Nome" class="text-danger"></span>
+				</div>
+				<div class="form-group w-50 m-2">
+					<label asp-for="Telefone" class="control-label"></label>
+					<input asp-for="Telefone" class="form-control" readonly style="height:40px" />
+					<span asp-validation-for="Telefone" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="d-flex m-2" style="width:1150px;">
+				<div class="form-group w-50 m-2">
+					<label asp-for="Email" class="control-label"></label>
+					<input asp-for="Email" class="form-control" readonly style="height:40px" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+				<div class="form-group w-50 m-2">
+					<label asp-for="CNPJ" class="control-label"></label>
+					<input asp-for="CNPJ" class="form-control" readonly style="height:40px" />
+					<span asp-validation-for="Telefone" class="text-danger"></span>
+				</div>
+			</div>
+
+
+		</form>
+	</div>
+
+
+
+	<form asp-action="Delete" class="d-flex justify-content-center" style="margin:20px; width:1280px;">
+		<div class="m-2">
+			<input type="hidden" asp-for="PlanodeSaudeId" />
+			<input type="submit" value="Excluir" class="btn btn-danger" style="width:200px;" />
+		</div>
+		<div class="m-2">
+			<a asp-action="Index" class="btn btn-primary" style="width:200px;">Voltar</a>
+		</div>
+	</form>
+</div>
