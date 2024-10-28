@@ -16,11 +16,21 @@ namespace Somativa_2.Controllers
 
         public FeedbackModelsController(SprintContext context)
         {
+
             _context = context;
         }
 
-        // GET: FeedbackModels
-        public async Task<IActionResult> Index()
+		public IActionResult Grafico()
+		{
+            var notas = _context.Feedback
+                .GroupBy(n => n.Nota)
+                .Select(g => new { Nota = g.Key, Comentario = g.Count() })
+                .ToList();
+            return View(notas);
+		}
+
+		// GET: FeedbackModels
+		public async Task<IActionResult> Index()
         {
             var sprintContext = _context.Feedback.Include(f => f.Consulta);
             return View(await sprintContext.ToListAsync());
@@ -45,19 +55,31 @@ namespace Somativa_2.Controllers
             return View(feedbackModel);
         }
 
-        // GET: FeedbackModels/Create
-        public IActionResult Create()
-        {
-            ViewData["ConsultaId"] = new SelectList(_context.Consultas, "ConsultaId", "ConsultaId");
-            return View();
-        }
+		// GET: FeedbackModels/Create
+		public IActionResult Create()
+		{
+			var consultas = _context.Consultas.ToList();
 
-        // POST: FeedbackModels/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+			if (consultas == null || !consultas.Any())
+			{
+				// Se preferir, exiba uma mensagem de erro
+				ModelState.AddModelError(string.Empty, "Nenhuma consulta disponível. Por favor, adicione consultas antes de continuar.");
+
+				// Ou redirecione para outra ação, por exemplo, uma página de erro ou criação de consultas
+				return RedirectToAction("ErrorPage"); // substitua "ErrorPage" pela ação desejada
+			}
+
+			ViewBag.Consulta = new SelectList(consultas, "ConsultaId", "Nome");
+			return View();
+		}
+
+
+		// POST: FeedbackModels/Create
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FeedbackId,Comentario,Nota,ConsultaId")] FeedbackModel feedbackModel)
+        public async Task<IActionResult> Create([Bind("FeedbackId,Comentario,Nota,Data")] FeedbackModel feedbackModel)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +88,7 @@ namespace Somativa_2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConsultaId"] = new SelectList(_context.Consultas, "ConsultaId", "ConsultaId", feedbackModel.ConsultaId);
+            ViewBag.Consulta = new SelectList(_context.Consultas, "ConsultaId", "Nome", feedbackModel.ConsultaId);
             return View(feedbackModel);
         }
 
@@ -83,8 +105,8 @@ namespace Somativa_2.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConsultaId"] = new SelectList(_context.Consultas, "ConsultaId", "ConsultaId", feedbackModel.ConsultaId);
-            return View(feedbackModel);
+			ViewBag.Consulta = new SelectList(_context.Consultas, "ConsultaId", "Nome", feedbackModel.ConsultaId);
+			return View(feedbackModel);
         }
 
         // POST: FeedbackModels/Edit/5
@@ -92,7 +114,7 @@ namespace Somativa_2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("FeedbackId,Comentario,Nota,ConsultaId")] FeedbackModel feedbackModel)
+        public async Task<IActionResult> Edit(Guid id, [Bind("FeedbackId,Comentario,Nota,Data")] FeedbackModel feedbackModel)
         {
             if (id != feedbackModel.FeedbackId)
             {
@@ -157,6 +179,7 @@ namespace Somativa_2.Controllers
                 _context.Feedback.Remove(feedbackModel);
             }
             
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

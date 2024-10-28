@@ -8,11 +8,11 @@ namespace Somativa_2.Models
         [Key]
         public Guid FeedbackId { get; set; }
         public string Comentario { get; set; }
+        public DateTime Data {  get; set; }
         public int Nota { get; set; }
+        [Range(1, 5)]
         [DisplayName("Consulta")]
-        public Guid ConsultaId { get; set; }
+        public Guid? ConsultaId { get; set; }
         public ConsultasModel? Consulta { get; set; }
-
-
     }
 }

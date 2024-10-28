@@ -10,27 +10,33 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="DataConsultas" class="control-label"></label>
                 <input asp-for="DataConsultas" class="form-control" />
                 <span asp-validation-for="DataConsultas" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Hora" class="control-label"></label>
                 <input asp-for="Hora" class="form-control" />
                 <span asp-validation-for="Hora" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ConsultorioId" class="control-label"></label>
-                <select asp-for="ConsultorioId" class ="form-control" asp-items="ViewBag.ConsultorioId"></select>
-            </div>
+
             <div class="form-group">
                 <label asp-for="PacienteId" class="control-label"></label>
-                <input asp-for="PacienteId" class="form-control" />
+                <select asp-for="PacienteId" class="form-control" asp-items="ViewBag.Pacientes" disabled="disabled"></select>
                 <span asp-validation-for="PacienteId" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="ConsultorioId" class="control-label"></label>
+                <select asp-for="ConsultorioId" class="form-control" asp-items="ViewBag.Consultorio"></select>
+                <span asp-validation-for="ConsultorioId" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

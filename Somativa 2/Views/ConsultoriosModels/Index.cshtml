@@ -1,108 +1,162 @@
 ﻿@model IEnumerable<Somativa_2.Models.ConsultoriosModel>
 
 @{
-    ViewData["Title"] = "Index"; 
+	ViewData["Title"] = "Index";
 
-    List<ConsultoriosModel> Consultorios = new List<ConsultoriosModel>();
-    Consultorios.Add(new ConsultoriosModel { ConsultorioId = new Guid(), Especialidade = "Todas" });
-    var categ = ViewData["Categ"] as List<ConsultoriosModel>;
+	List<Categ> categorias = new List<Categ>();
+	categorias.Add(new Categ { CategId = new Guid(), Nome = "Todas" });
+	var categ = ViewData["Categ"] as List<Categ>;
 
-    foreach (var item in Model)
-    {
-        Consultorios.Add(new ConsultoriosModel { ConsultorioId = item.ConsultorioId, Especialidade = item.Especialidade });
-    }
+	foreach (var item in categ)
+	{
+		categorias.Add(new Categ { CategId = item.CategId, Nome = item.Nome });
+	}
 }
 
-<div style=" position:relative; height:750px;">
-    <img src="/img/heroCon.png" style="margin-left:-130px;margin-top:-25px; height: 755px;position: absolute;" />
-    <div class="container col-xxl-8 px-4 py-5" style="position:relative;left:100px;">
-        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-            <div class="col-lg-10" style="margin-top:150px">
-                <h1 class="display-3 fw-bold text-body-emphasis lh-1 mb-3 text-white">MARQUE SUA CONSULTA MÉDICA ONLINE</h1>
-                <p class="lead text-white">
-                    Um amanhã mais saudável começa hoje: Agende sua consulta!
-                    Seu bem-estar, nossa experiência: marque sua consulta hoje mesmo.
-                </p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Agende sua Consulta</button>
-                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 me-md-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-                        </svg> Deixe seu Feedback
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+<div style=" position:relative; height:780px;">
+	<img src="/img/heroCon.png" style="margin-left:-130px;margin-top:-25px; height: 755px;position: absolute;" />
+	<div class="container col-xxl-8 px-4 py-5" style="position:relative;left:100px;">
+		<div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+			<div class="col-lg-10" style="margin-top:150px">
+				<h1 class="display-3 fw-bold text-body-emphasis lh-1 mb-3 text-white">MARQUE SUA CONSULTA MÉDICA ONLINE</h1>
+				<p class="lead text-white">
+					Um amanhã mais saudável começa hoje: Agende sua consulta!
+					Seu bem-estar, nossa experiência: marque sua consulta hoje mesmo.
+				</p>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-start">
+					<button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Agende sua Consulta</button>
+					<button type="button" class="btn btn-outline-secondary btn-lg px-4 me-md-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+						</svg> Deixe seu Feedback
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!--
-            <img src="@Url.Action("GetImage", "Relatorio", new { imageName = "imagem.png" })" alt="Descrição da imagem">
-            -->
-<form>
-    <div id="filtros " class="d-flex">
-        <button asp-action="SearchProd" class="btn text-white " style="background-color:darkblue">Filtrar</button>
-        <select name="inCategoria" class="form-select col-6">
-            @foreach (var item in Model)
-            {
-                <option value="@item.ConsultorioId">@item.Especialidade</option>
-            }
-            
+			<img src="@Url.Action("GetImage", "Relatorio", new { imageName = "imagem.png" })" alt="Descrição da imagem">
+			-->
+<form class="m-3">
+	<div id="filtros " class="d-flex m-2" style="flex-direction:row-reverse">
+		<button asp-action="SearchProd" class="btn text-white m-2 btn-primary " style="height:43px;width:140px; font-size:19px;">Filtrar</button>
+		<a class="btn btn-secondary m-2 text-center" asp-action="Index" style="height:43px;width:140px; font-size:19px;">Cancelar</a>
+		<select name="inCategoria" class="form-select m-2 " style="height:43px;width:1100px">
+			@foreach (var item in categ)
+			{
+				<option value="@item.CategId">@item.Nome</option>
+			}
+		</select>
 
-        </select>
-        
-    </div>
+	</div>
 </form>
-
-<p>
-    <a asp-action="Create">Create New</a>
+<p style="margin:60px ">
+	<a asp-action="Create" class="btn btn-primary" style="margin:-60px; height:43px;width:140px; font-size:19px;">Criar novo</a>
 </p>
+<div>
+	@foreach (var item in Model)
+	{
+		<div class="card mb-3 m-3 " style="width: 1250px;border-radius:30px">
+			<div class="row g-2 d-flex" style="height:309px">
+				<div class="col-3">
+					<img src="~/img/@item.img" alt="Imagem da Notícia" style="width: 300px; height:300px ;border-radius:10px" />
+				</div>
+				<div class="col-8 d-flex " style="width:750px; flex-direction:column">
+					<div class="card-body">
+						<h2 class="card-title" style="font-size:40px;color:#157EBB">@Html.DisplayFor(modelItem => item.Nome)</h2>
+						<p class="card-text" style="height:5px;font-size:18px ;color:black "> @Html.DisplayFor(modelItem => item.Descricao)</p>
+					</div>
+					<div class="d-flex justify-content-center " style="margin-top:30px; width:1550px">
+						@if (User.IsInRole("Admin"))
+						{
+							<div class="m-2">
+								<a asp-action="Edit" asp-route-id="@item.ConsultorioId">
+									<svg xmlns="http://www.w3.org/2000/svg" width="27" color="#157EBB" height="27" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+										<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+										<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+									</svg>
+								</a>
+							</div>
+							<div class="m-2">
+								<a asp-action="Details" asp-route-id="@item.ConsultorioId">
+									<svg xmlns="http://www.w3.org/2000/svg" width="27" color="#157EBB" height="27" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
+										<path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />
+									</svg>
+								</a>
+							</div>
+							<div class="m-2">
+								<a asp-action="Delete" asp-route-id="@item.ConsultorioId">
+									<svg xmlns="http://www.w3.org/2000/svg" width="27" color="#157EBB" height="27" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+										<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+									</svg>
+								</a>
+							</div>
+						}
+						else
+						{
+							<div class="m-2">
+								<a asp-action="Details" asp-route-id="@item.ConsultorioId" class="btn btn-primary" style="width:200px;height:40px">
+									AGENDAR
+								</a>
+							</div>
+						}
+					</div>			
+				</div>
+			</div>
+		</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Endereco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Especialidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Endereco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Especialidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ConsultorioId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ConsultorioId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ConsultorioId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	}
+</div>
+
+<div style="margin:90px">
+	<h1 style="color:#157EBB;" class="text-center">UMA CLÍNICA MÉDICA ACESSÍVEL</h1>
+	<p class="text-center" style="font-size:19px">Somos Viva + porque nossa gestão e forma de atendimento são baseadas nos 5 princípios abaixo:</p>
+	<div class="d-flex">
+		<div class="m-4">
+			<div class="border border-black " style="width:190px; border-radius:20px; margin:30px,30px,30px,30px;">
+				<img src="/img/a.png" style="" />
+			</div>
+			<div style="width:180px" class="text-center ">
+				<p style="font-size:15px;flex-wrap:wrap;" class="fw-bold text-center">ATENDIMENTO COM O CARINHO E ATENÇÃO</p>
+			</div>
+		</div>
+		<div class="m-4">
+			<div class="border border-black " style="width:190px; border-radius:20px; margin:20px,20px,20px,20px;">
+				<img src="/img/e.png" style="" />
+			</div>
+			<div style="width:180px" class="text-center ">
+				<p style="font-size:15px;flex-wrap:wrap;" class="fw-bold text-center">OS MELHORES MÉDICOS ESPECIALISTAS</p>
+			</div>
+		</div>
+		<div class="m-4">
+			<div class="border border-black " style="width:190px; border-radius:20px; margin:20px,20px,20px,20px;">
+				<img src="/img/d.png" style="" />
+			</div>
+			<div style="width:180px" class="text-center ">
+				<p style="font-size:15px;flex-wrap:wrap;" class="fw-bold text-center">CONSULTAS, EXAMES E CIRURGIAS</p>
+			</div>
+		</div>
+		<div class="m-4">
+			<div class="border border-black " style="width:190px; border-radius:20px; margin:20px,20px,20px,20px;">
+				<img src="/img/b.png" style="" />
+			</div>
+			<div style="width:180px" class="text-center ">
+				<p style="font-size:15px;flex-wrap:wrap;" class="fw-bold text-center">AGENDAMENTO RÁPIDO E DESCOMPLICADO</p>
+			</div>
+		</div>
+		<div class="m-4">
+			<div class="border border-black " style="width:190px; border-radius:20px; margin:20px,20px,20px,20px;">
+				<img src="/img/c.png" style="" />
+			</div>
+			<div style="width:180px" class="text-center ">
+				<p style="font-size:15px;flex-wrap:wrap;" class="fw-bold text-center">UMA UNIDADE PERTO DE VOCÊ</p>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+	</tbody>
 </table>

@@ -1,7 +1,7 @@
 ﻿@model Somativa_2.Models.PlanodeSaudeModel
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
 }
 
 <h1 class="d-flex" style="justify-content:center; padding:25px">Detalhes Dessa Item </h1>
@@ -45,7 +45,7 @@
 
 		</form>
 	</div>
-<div class="d-flex justify-content-center">
-		<a asp-action="Edit" asp-route-id="@Model?.PlanodeSaudeId" class="btn btn-primary w-25 m-2">Edit</a> 
+	<div class="d-flex justify-content-center">
+		<a asp-action="Edit" asp-route-id="@Model?.PlanodeSaudeId" class="btn btn-primary w-25 m-2">Edit</a>
 		<a asp-action="Index" class="btn btn-primary w-25 m-2">Voltar</a>
-</div>
+	</div>

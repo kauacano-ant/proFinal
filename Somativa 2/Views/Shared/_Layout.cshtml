@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="~/Somativa_2.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/img/logo.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
 </head>
 <body>
@@ -40,6 +42,7 @@
                         <li class="nav-item m-2">
                             <a class="nav-link text-dark" asp-area="" asp-controller="PlanodeSaudeModels" asp-action="Index">Plano de Saude</a>
                         </li>
+                       
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -52,11 +55,25 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted ">
-        <div class="container">
-            &copy; 2024 - Somativa_2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+      
+
+        .content {
+            flex: 1 0 auto; /* Ocupa o restante da página */
+            
+        }
+
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
+        <!-- Footer -->
+   
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -12,8 +12,8 @@ using Somativa_2.Data;
 namespace Somativa_2.Migrations
 {
     [DbContext(typeof(SprintContext))]
-    [Migration("20240815140625_AddMigrationwith")]
-    partial class AddMigrationwith
+    [Migration("20241024170417_AddUserId7ToConsultas")]
+    partial class AddUserId7ToConsultas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,28 @@ namespace Somativa_2.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Somativa_2.Models.Categ", b =>
+                {
+                    b.Property<Guid>("CategId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategId");
+
+                    b.ToTable("Categ", (string)null);
+                });
+
             modelBuilder.Entity("Somativa_2.Models.ConsultasModel", b =>
                 {
                     b.Property<Guid>("ConsultaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ConsultorioId")
+                    b.Property<Guid?>("ConsultorioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataConsultas")
@@ -40,17 +55,17 @@ namespace Somativa_2.Migrations
                     b.Property<DateTime>("Hora")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PacienteId")
+                    b.Property<Guid?>("PacienteId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PacientesPacienteId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ConsultaId");
 
                     b.HasIndex("ConsultorioId");
 
-                    b.HasIndex("PacientesPacienteId");
+                    b.HasIndex("PacienteId");
 
                     b.ToTable("Consultas", (string)null);
                 });
@@ -60,6 +75,13 @@ namespace Somativa_2.Migrations
                     b.Property<Guid>("ConsultorioId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -81,7 +103,12 @@ namespace Somativa_2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("img")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ConsultorioId");
+
+                    b.HasIndex("CategId");
 
                     b.ToTable("Consultorios", (string)null);
                 });
@@ -98,6 +125,9 @@ namespace Somativa_2.Migrations
 
                     b.Property<Guid>("ConsultaId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Nota")
                         .HasColumnType("int");
@@ -141,6 +171,12 @@ namespace Somativa_2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("img")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PacienteId");
 
                     b.HasIndex("PlanodeSaudeId");
@@ -154,6 +190,10 @@ namespace Somativa_2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CNPJ")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -166,6 +206,9 @@ namespace Somativa_2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("img")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PlanodeSaudeId");
 
                     b.ToTable("Planos_de_Saude", (string)null);
@@ -175,17 +218,26 @@ namespace Somativa_2.Migrations
                 {
                     b.HasOne("Somativa_2.Models.ConsultoriosModel", "Consultorio")
                         .WithMany()
-                        .HasForeignKey("ConsultorioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConsultorioId");
 
                     b.HasOne("Somativa_2.Models.PacientesModel", "Pacientes")
                         .WithMany()
-                        .HasForeignKey("PacientesPacienteId");
+                        .HasForeignKey("PacienteId");
 
                     b.Navigation("Consultorio");
 
                     b.Navigation("Pacientes");
+                });
+
+            modelBuilder.Entity("Somativa_2.Models.ConsultoriosModel", b =>
+                {
+                    b.HasOne("Somativa_2.Models.Categ", "Categ")
+                        .WithMany("Consultorios")
+                        .HasForeignKey("CategId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categ");
                 });
 
             modelBuilder.Entity("Somativa_2.Models.FeedbackModel", b =>
@@ -208,6 +260,11 @@ namespace Somativa_2.Migrations
                         .IsRequired();
 
                     b.Navigation("PlanodeSaude");
+                });
+
+            modelBuilder.Entity("Somativa_2.Models.Categ", b =>
+                {
+                    b.Navigation("Consultorios");
                 });
 #pragma warning restore 612, 618
         }

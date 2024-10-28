@@ -1,0 +1,112 @@
+﻿@model IEnumerable<dynamic>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gráfico de Notas</title>
+       <style>
+        .chart-container {
+            width: 100%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-item {
+            width: 60%;
+            height: auto;
+            display:flex;
+            align-items:center;
+        }
+
+        canvas {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;" class="m-4">Gráfico</h1>
+    <p style="font-size:17px;" class="m-4 text-center">O gráfico de pizza representa a frequência das avaliações de 1 a 5 estrelas, onde cada fatia do gráfico indica a porcentagem de estrelas recebidas. O gráfico fornece uma visão clara da satisfação geral, com um destaque para as avaliações mais altas.</p>
+
+    <p>
+        <a asp-action="Index" class="btn btn-primary ">Voltar</a>
+    </p>
+    
+    <div style="width: 900px; height: 1250px; margin:auto; display:flex;flex-direction: column;align-items:center;">
+        <h1 class="m-1">Grafico de Barras </h1>
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+        <h1 class="m-3">Grafico de Pizza </h1>
+        <div class="chart-item">
+            <canvas id="mySecondChart"></canvas>
+        </div>
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const notas = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+
+            const labels = [1, 2, 3, 4, 5];
+            const data = labels.map(label => {
+                const nota = notas.find(n => n.Nota === label);
+                return nota ? nota.Comentario : 0;
+            });
+
+            const colors = [
+                'rgba(108, 229, 232, 0.8)',
+                'rgba(65, 184, 213, 0.8)',
+                'rgba(45, 139, 186, 0.8)',
+                'rgba(47, 95, 152, 0.8)',
+                'rgba(49, 53, 110, 0.8)'
+            ];
+
+            const borderColors = [
+                'rgba(108, 229, 232, 1.0)',
+                'rgba(65, 184, 213, 1.0)',
+                'rgba(45, 139, 186, 1.0)',
+                'rgba(47, 95, 152, 1.0)',
+                'rgba(49, 53, 110, 1.0)'
+            ];
+
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Notas',
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        </script>
+        
+        <script>
+            const ctx2 = document.getElementById('mySecondChart').getContext('2d');
+
+            const mySecondChart = new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Notas',
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        </script>
+    </div>
+    
+</body>
+</html>

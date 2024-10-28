@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Scripting;
@@ -16,12 +17,20 @@ namespace Somativa_2.Controllers
 	{
 		private readonly SprintContext _context;
 		private string _caminho;
+		private readonly SignInManager<IdentityUser> _signInManager;
+		private readonly UserManager<IdentityUser> _userManager;
 
-		public PlanodeSaudeModelsController(SprintContext context, IWebHostEnvironment hostEnvironment)
+		public PlanodeSaudeModelsController(SprintContext context, IWebHostEnvironment hostEnvironment, SignInManager<IdentityUser> signInManager
+			, UserManager<IdentityUser> userManager)
 		{
 			_context = context;
 			_caminho = hostEnvironment.WebRootPath;
+			_signInManager = signInManager;
+			_userManager = userManager;
 		}
+
+
+
 
 		// GET: PlanodeSaudeModels
 		public async Task<IActionResult> Index()
@@ -29,6 +38,7 @@ namespace Somativa_2.Controllers
 			return _context.PlanodeSaude != null ?
 						View(await _context.PlanodeSaude.ToListAsync()) :
 						Problem("Entity set 'SprintContext.PlanodeSaude'  is null.");
+
 		}
 
 		// GET: PlanodeSaudeModels/Details/5
@@ -46,13 +56,50 @@ namespace Somativa_2.Controllers
 				return NotFound();
 			}
 
-			return View(planodeSaudeModel);
+			// Verifica se o usuário está autenticado
+			if (_signInManager.IsSignedIn(User))
+			{
+				var user = await _userManager.GetUserAsync(User); // Obtém o usuário atual
+
+				// Verifica se o usuário é "Admin"
+				if (await _userManager.IsInRoleAsync(user, "Admin"))
+				{
+
+					return View(planodeSaudeModel);
+				}
+				else
+				{
+					// Se não for admin, carrega apenas o paciente associado ao usuário
+					var pacientesModel = await _context.Paciente
+						.Include(p => p.PlanodeSaude)
+						.FirstOrDefaultAsync(p => p.UserId == user.Id);
+
+					if (pacientesModel != null)
+					{
+						// Redireciona para a página de detalhes do paciente associado ao usuário
+						return RedirectToAction("Details", "PacientesModels", new { id = pacientesModel.PacienteId });
+					}
+					else
+					{
+						// Se o paciente não existir, redireciona para a página de criação
+						return Redirect("/PacientesModels/Create");
+					}
+				}
+			}
+			else
+			{
+				// Se o usuário não estiver autenticado, redireciona para a página de login
+				return Redirect("/Identity/Account/Login");
+			}
+
+
 		}
 
 		// GET: PlanodeSaudeModels/Create
 		public IActionResult Create()
 		{
-			return View();
+            //ViewBag.PlanodeSaude = new SelectList(_context.PlanodeSaude, "PlanodeSaudeId", "Nome");
+            return View();
 		}
 
 		// POST: PlanodeSaudeModels/Create
@@ -90,7 +137,7 @@ namespace Somativa_2.Controllers
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
-			return View(planodeSaudeModel);
+            return View(planodeSaudeModel);
 		}
 
 		// GET: PlanodeSaudeModels/Edit/5
@@ -188,6 +235,7 @@ namespace Somativa_2.Controllers
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
+
 			return View(planodeSaudeModel2);
 
 			//if (ModelState.IsValid)

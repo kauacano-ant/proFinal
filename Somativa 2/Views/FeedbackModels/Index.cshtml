@@ -1,47 +1,132 @@
 ﻿@model IEnumerable<Somativa_2.Models.FeedbackModel>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">FEEDBACK</h1>
+
+<p class="text-center" style="font-size:18px; margin:40px">Confira os feedbacks dos clientes abaixo e tenha uma visão clara sobre suas experiências. Aqui, você pode ver como nosso atendimento é avaliado, com notas de 1 a 5 estrelas, que refletem a satisfação e qualidade dos serviços prestados.</p>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Comentario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nota)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Consulta)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comentario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nota)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Consulta.ConsultaId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FeedbackId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FeedbackId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.FeedbackId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th class="m-2">
+				@Html.DisplayNameFor(model => model.Comentario)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Nota)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Consulta)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Comentario)
+				</td>
+				<td>
+					<div class="star-rating">
+						@for (int i = 5; i >= 1; i--)
+						{
+							<input type="radio" id="star@item.Feedback_Id@i" name="Estrelas_@item.FeedbackId" value="@i"
+							@(item.Nota == i ? "checked" : "") disabled />
+							<label for="star_@item.FeedbackId@i" title="@i estrelas">★</label>
+						}
+					</div>
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Consulta.ConsultaId)
+				</td>
+				<td>
+					<div class="d-flex">
+						<div class=" d-none">
+							<a asp-action="Edit" asp-route-id="@item.FeedbackId">
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" color="#157EBB" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+									<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+									<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+								</svg>
+							</a>
+						</div>
+						<div class="m-2">
+							<a asp-action="Details" asp-route-id="@item.FeedbackId">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="24" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
+									<path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />
+								</svg>
+							</a>
+						</div>
+						<div class="m-2" >
+							<a asp-action="Delete" asp-route-id="@item.FeedbackId">
+								<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="24" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+									<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+								</svg>
+							</a>
+						</div>
+					</div>
+				</td>
+				
+			</tr>
+		}
+
+	</tbody>
 </table>
+
+<div class="text-end">
+	<a asp-action="Grafico" class="btn btn-primary">Gerar Gráfico</a>
+</div>
+
+<div style="height:500px; margin-top:50px;">
+	<h1 class="m-2 p-2 text-center">Comentarios mais recentes</h1>
+	<div class="accordion accordion-flush" id="accordionFlushExample">
+		<div class="accordion">
+			<h2 class="accordion-header " id="flush-headingOne">
+				<button class="accordion-button collapsed m-2" style="background-color:#F1F1F1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+					Accordion Item #1
+				</button>
+			</h2>
+			<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+				<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+			</div>
+		</div>
+		<div class="accordion">
+			<h2 class="accordion-header" id="flush-headingTwo">
+				<button class="accordion-button collapsed m-2" style="background-color:#F1F1F1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+					Accordion Item #2
+				</button>
+			</h2>
+			<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+				<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+			</div>
+		</div>
+		<div class="accordion">
+			<h2 class="accordion-header" id="flush-headingThree">
+				<button class="accordion-button collapsed m-2" style="background-color:#F1F1F1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+					Accordion Item #3
+				</button>
+			</h2>
+			<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+				<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+			</div>
+		</div>
+		<div class="accordion">
+			<h2 class="accordion-header" id="flush-headingFor">
+				<button class="accordion-button collapsed m-2" style="background-color:#F1F1F1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFor" aria-expanded="false" aria-controls="flush-collapseFor">
+					Accordion Item #4
+				</button>
+			</h2>
+			<div id="flush-collapseFor" class="accordion-collapse collapse" aria-labelledby="flush-headingFor" data-bs-parent="#accordionFlushExample">
+				<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+			</div>
+		</div>
+
+
+	</div>
+

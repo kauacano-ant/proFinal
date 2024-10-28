@@ -1,0 +1,108 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "LOGIN";
+}
+
+<div class="row" > 
+    <div class="col-md-5" style="margin-top:120px">
+        <h1 style="text-align:center;font-weight:bold">@ViewData["Title"]</h1>
+
+        <form id="account" method="post" >
+            <h4 style="text-align:center">Olá paciente, faça seu login!</h4>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="d-flex row mb-1 g-3">
+
+                <div class="form-floating">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="checkbox">
+                <label asp-for="Input.RememberMe" class="form-label">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+
+            <div style="text-align:end" class="d-flex">
+                <p class="col">
+                    Esqueceu sua
+                </p>
+                <p class="col" style="margin-left:-410px">
+                    <a id="forgot-password" asp-page="./ForgotPassword">Senha?</a>
+                </p>
+            </div>
+
+            <div>
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Entrar</button>
+            </div>
+
+            <div style="text-align:center">
+                <div class="d-flex">
+                    <p class="col">
+                        Não tem conta?
+                    </p>
+                    <p class="col" style="margin-left:-320px">
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Cadastra-se</a>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-6 d-none d-lg-block" style="height:-100px">
+        <img src="~/img/Doctor.jpg" style="margin-left:22.1%;margin-top:-16px;margin-bottom:-16px;" alt="Imagem médica" />
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    h4 {
+        font-size: 23px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #001C42;
+    }
+
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+    }
+
+    .form-floating > label {
+        padding-left: 15px;
+    }
+
+    .form-floating > .form-control {
+        padding: 20px 10px;
+    }
+
+    .form-floating {
+        margin-bottom: 20px;
+    }
+
+    .form-group a {
+        color: #007bff;
+    }
+
+        .form-group a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+</style>

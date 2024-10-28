@@ -20,3 +20,29 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.star-rating {
+    direction: rtl;
+    font-size: 2em;
+    unicode-bidi: bidi-override;
+    display: inline-block;
+}
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        color: #ddd;
+        cursor: pointer;
+        font-size: 2rem;
+        padding: 0.1rem;
+    }
+
+    .star-rating input:checked ~ label {
+        color: #f5c518;
+    }
+
+    .star-rating input:hover ~ label {
+        color: #f5c518;
+    }

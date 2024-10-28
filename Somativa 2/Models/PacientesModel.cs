@@ -8,6 +8,7 @@ namespace Somativa_2.Models
     {
         [Key]
         public Guid PacienteId { get; set; }
+        [DisplayName("Nome do Paciente")]
         public string Nome { get; set; }
         public string CPF { get; set; }
         public string RG { get;set; }
@@ -19,9 +20,7 @@ namespace Somativa_2.Models
         [DisplayName("PlanodeSaude")]
         public Guid PlanodeSaudeId { get; set; }
         public PlanodeSaudeModel? PlanodeSaude { get; set; }
-
-
-
-
+		public string? img { get; set; }
+        public string? UserId { get; set; }
     }
 }

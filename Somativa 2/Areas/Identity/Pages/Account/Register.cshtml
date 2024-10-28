@@ -1,67 +1,95 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "CADASTRAR";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8" style="margin-top:90px">
+            <h1 style="text-align:center; font-weight:bold">@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
+            <h4 class="text-center">Informações pessoais - Necessário para prescrição digital</h4>
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="d-flex row mb-3 g-3">
+                    <div class="col form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Email" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Senha" />
+                        <label asp-for="Input.Password">Senha</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Senha" />
+                        <label asp-for="Input.ConfirmPassword">Confirme sua Senha</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">CADASTRAR</button>
+
+                <div class="form-group mt-3 text-center" style="margin-bottom:-40px">
+                    <a href="@Url.Page("/Account/Login")">Já tem conta? Faça login</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block" style="position:relative; height:622px;">
+            <img src="~/img/Doctor1.jpg" style="margin-left:6.7%;margin-top:-50px;margin-bottom:-63px;" alt="Imagem médica" />
+        </div>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<style>
+    h4 {
+        font-size: 23px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #001C42;
+    }
+
+    #registerSubmit {
+        background-color: #007bff;
+        border: none;
+        font-size: 1.2rem;
+        padding: 10px;
+        margin-top: 15px;
+    }
+
+        #registerSubmit:hover {
+            background-color: #0056b3;
+        }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+    }
+
+    .form-floating > label {
+        padding-left: 15px;
+    }
+
+    .form-floating > .form-control {
+        padding: 20px 10px;
+    }
+
+    .form-floating {
+        margin-bottom: 20px;
+    }
+
+    .form-group a {
+        color: #007bff;
+    }
+
+        .form-group a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+</style>

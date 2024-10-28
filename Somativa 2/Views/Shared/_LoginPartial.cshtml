@@ -3,25 +3,99 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-            <a class="nav-link text-dark" style="margin-right:15px" asp-area="Identity" asp-page="/Account/Login"> Login</a>
-           
-    </li>
-        <li class="nav-item">
-            <a class="nav-link text-white btn btn-primary"style="margin-right:20px" asp-area="Identity" asp-page="/Account/Register">Cadastre-se</a>
-        </li>
-}
+	@if (SignInManager.IsSignedIn(User))
+	{
+		<div class="dropdown">
+			<button onclick="toggleDropdown()" class="dropbtn nav-link btn text-dark m-2" style="margin-left: -40px;">
+				Opções <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+					<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+					<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+				</svg>
+			</button>  <div id="myDropdown" class="dropdown-content">
+
+				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Gerenciar Conta">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+					</svg>
+					Gerenciar Conta
+				</a>
+
+
+				<a class="nav-link text-dark" asp-area="" asp-controller="Categs" asp-action="Index">Consultorio Comfig</a>
+
+				<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+					<button type="submit" class="nav-link btn btn-link text-dark text-center" style="width: 100%; text-align: left;">
+						Sair
+					</button>
+				</form>
+			</div>
+		</div>
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="nav-link text-dark" style="margin-right:15px" asp-area="Identity" asp-page="/Account/Login">Login</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link text-white btn btn-primary" style="margin-right:20px" asp-area="Identity" asp-page="/Account/Register">Cadastre-se</a>
+		</li>
+	}
 </ul>
+
+<script>
+	function toggleDropdown() {
+		document.getElementById("myDropdown").classList.toggle("show");
+	}
+
+	// Fecha o dropdown ao clicar fora dele
+	window.onclick = function (event) {
+		if (!event.target.matches('.dropbtn')) {
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			for (var i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
+		}
+	}
+</script>
+
+<style>
+	/* Estilização do dropdown */
+	.dropdown {
+		position: relative;
+		display: inline-block;
+	}
+
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		left: -80px; /* Desloca o dropdown para a esquerda */
+		background-color: #f9f9f9;
+		min-width: 160px;
+		max-width: 200px; /* Limita a largura máxima do dropdown */
+		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+		z-index: 1;
+	}
+
+		.dropdown-content a,
+		.dropdown-content form button {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+			background: none;
+			border: none;
+		}
+
+			.dropdown-content a:hover,
+			.dropdown-content form button:hover {
+				background-color: #f1f1f1;
+			}
+
+	.show {
+		display: block;
+	}
+</style>

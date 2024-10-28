@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Professor\Documents\Maui\Somativa 2\Somativa 2
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Areas/Identity/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Areas/Identity/Pages/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -36,6 +40,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/Categs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/Categs/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/Categs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/Categs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/Categs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/ConsultasModels/Create.cshtml]
@@ -92,6 +116,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/FeedbackModels/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVlZGJhY2tNb2RlbHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/FeedbackModels/Grafico.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmVlZGJhY2tNb2RlbHNcR3JhZmljby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Professor/Documents/Maui/Somativa 2/Somativa 2/Views/FeedbackModels/Index.cshtml]
