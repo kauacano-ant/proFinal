@@ -8,63 +8,335 @@
 <div style="margin-left:-40px;">
 	<h1 style="text-align:center; background-color:#C7DAEF;color:#001C42;margin-left:-80px;width:1540px;height:55px">Planos de Saude Disponiveis </h1>
 	<h5 style="text-align:center;">Apresentamos mais de 5 planos de saúde para que possa escolher o que mais te agrada!</h5>
-<p>
-	<a asp-action="Create" class="btn btn-primary m-3" >Criar Novo</a>
-</p>
-<div class=" d-flex" style="flex-wrap:wrap; width:1600px;"  >
-@foreach (var item in Model)
-{
-		<div class="card mb-3 m-2 " style="width: 450px;border-radius:30px">
-			<div class="row g-2 d-flex">
-				<div class="col-md-5">
-					<img src="~/img/@item.img" alt="Imagem da Notícia" style="width: 100%; height:100% ;border-radius:10px" />
-				</div>
-				<div class="col-md-8" style="width:210px;">
-					<div class="card-body">
-						<h4 class="card-title">@Html.DisplayFor(modelItem => item.Nome)</h4>
-						<p class="card-text " style="height:5px;color:gray"> @Html.DisplayFor(modelItem => item.Telefone)</p>
-						<p class="card-text" style="height:5px;color:gray "> @Html.DisplayFor(modelItem => item.Email)</p>
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPlanoModal">
+		Criar Novo Plano de Saúde
+	</button>
+
+	<div class=" d-flex" style="flex-wrap:wrap; width:1600px;">
+		@foreach (var item in Model)
+		{
+			<div class="card mb-3 m-2 " style="width: 450px;border-radius:30px">
+				<div class="row g-2 d-flex">
+					<div class="col-md-5">
+						<img src="~/img/@item.img" alt="Imagem da Notícia" style="width: 100%; height:100% ;border-radius:10px" />
 					</div>
+					<div class="col-md-8" style="width:210px;">
+						<div class="card-body">
+							<h4 class="card-title">@Html.DisplayFor(modelItem => item.Nome)</h4>
+							<p class="card-text " style="height:5px;color:gray"> @Html.DisplayFor(modelItem => item.Telefone)</p>
+							<p class="card-text" style="height:5px;color:gray "> @Html.DisplayFor(modelItem => item.Email)</p>
+						</div>
 						@if (User.IsInRole("Admin"))
 						{
 							<div class="d-flex justify-content-center " style="margin-top:30px; width:210px; margin-left:10px">
 								<div class="m-2">
-									<a asp-action="Edit" asp-route-id="@item.PlanodeSaudeId">
-										<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+									<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editPlanoModal"
+											data-id="@item.PlanodeSaudeId" data-nome="@item.Nome" data-telefone="@item.Telefone"
+											data-email="@item.Email" data-cnpj="@item.CNPJ" data-img="@item.img">
+										<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" color="#157EBB" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
 											<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
 											<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
 										</svg>
-									</a>
+									</button>
 								</div>
 								<div class="m-2">
-									<a asp-action="Details" asp-route-id="@item.PlanodeSaudeId">
-										<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="25" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
+									<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detailsModal"
+											data-id="@item.PlanodeSaudeId"
+											data-nome="@item.Nome"
+											data-telefone="@item.Telefone"
+											data-email="@item.Email"
+											data-cnpj="@item.CNPJ"
+											data-img="@Url.Content($"~/img/{item.img}")">
+										<svg xmlns="http://www.w3.org/2000/svg" width="25" color="#157EBB" height="25" fill="currentColor" class="bi bi-folder2-open" viewBox="0 0 16 16">
 											<path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z" />
 										</svg>
-									</a>
+									</button>
 								</div>
 								<div class="m-2">
-									<a asp-action="Delete" asp-route-id="@item.PlanodeSaudeId">
-										<svg xmlns="http://www.w3.org/2000/svg" width="22" color="#157EBB" height="25" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+									<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.PlanodeSaudeId">
+										<svg xmlns="http://www.w3.org/2000/svg" width="25" color="#157EBB" height="25" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
 											<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
 										</svg>
-									</a>
+									</button>
 								</div>
 							</div>
 						}
 						else
 						{
+							
 							<div class="m-2">
-								<a asp-action="Details" asp-route-id="@item.PlanodeSaudeId" class="btn btn-primary"  style="width:160px; height:40px; align-items:center;justify-content:center;margin-top:25px;margin-left:30px;">
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal" style=" width:160px; height:40px; align-items:center;justify-content:center;margin-top:25px;margin-left:30px"
+										data-id="@item.PlanodeSaudeId"
+										data-nome="@item.Nome"
+										data-telefone="@item.Telefone"
+										data-email="@item.Email"
+										data-cnpj="@item.CNPJ"
+										data-img="@Url.Content($"~/img/{item.img}")">
 									Detalhes
-								</a>
+								</button>
 							</div>
 						}
-					
+
+					</div>
+				</div>
+			</div>
+
+		}
+	</div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to delete this item?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<form asp-action="Delete" method="post">
+					<input type="hidden" id="deleteId" name="id" value="" />
+					<button type="submit" class="btn btn-danger">Delete</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.modal-custom {
+		max-width: 600px; /* Define a largura máxima da modal */
+		width: 100%; /* Garante que a modal use 100% da largura máxima */
+	}
+</style>
+
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-custom modal-dialog-centered">
+		<!-- Adicione aqui a classe modal-custom -->
+		<div class="modal-content">
+			<div class="modal-header ">
+				<h5 class="modal-title " id="detailsModalLabel">Detalhes do Plano de Saúde</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body d-flex">
+				<div style="width:250px;height:250px;">
+					<img id="planoImagem" src="" alt="Imagem do Plano de Saúde" style="width:100%; height:100%; border-radius:10px; margin-bottom:15px;">
+				</div>
+				<div class="m-3">
+					<h2 class="m-2"><strong></strong> <span id="planoNome"></span></h2>
+					<h5 class="d-flex flex-column"><strong>Telefone:</strong> <span id="planoTelefone"></span></h5>
+					<h5 class="d-flex flex-column "><strong>Email:</strong> <span id="planoEmail"></span></h5>
+					<h5 class="d-flex flex-column"><strong>CNPJ:</strong> <span id="planoCnpj"></span></h5>
 				</div>
 			</div>
 		</div>
-	
+	</div>
+</div>
+<div class="modal fade" id="editPlanoModal" tabindex="-1" aria-labelledby="editPlanoModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editPlanoModalLabel">Editar Plano de Saúde</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<!-- Configura o formulário para enviar os dados para a ação Edit -->
+			<form asp-action="Edit" asp-controller="PlanoDeSaudeModels" method="post" enctype="multipart/form-data" id="formEditPlanoModal">
+				<div class="modal-body">
+					<input type="hidden" id="editPlanoId" name="PlanodeSaudeId" />
+
+					<div class="mb-3">
+						<label for="editNome" class="form-label">Nome</label>
+						<input type="text" class="form-control" id="editNome" name="Nome" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="editTelefone" class="form-label">Telefone</label>
+						<input type="text" class="form-control" id="editTelefone" name="Telefone" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="editEmail" class="form-label">Email</label>
+						<input type="email" class="form-control" id="editEmail" name="Email" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="editCNPJ" class="form-label">CNPJ</label>
+						<input type="text" class="form-control" id="editCNPJ" name="CNPJ" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="editImg" class="form-label">Nova Imagem</label>
+						<input type="file" class="form-control" id="editImg" name="imgUp" accept="image/*" />
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<input type="submit" value="Save" class="btn btn-primary w-25 m-2" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="createPlanoModal" tabindex="-1" aria-labelledby="createPlanoModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="createPlanoModalLabel">Criar Novo Plano de Saúde</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<!-- Configura o formulário para enviar os dados para a ação Create -->
+			<form asp-action="Create" asp-controller="PlanoDeSaudeModels" method="post" enctype="multipart/form-data" id="formCreatePlanoModal">
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="createNome" class="form-label">Nome</label>
+						<input type="text" class="form-control" id="createNome" name="Nome" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="createTelefone" class="form-label">Telefone</label>
+						<input type="text" class="form-control" id="createTelefone" name="Telefone" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="createEmail" class="form-label">Email</label>
+						<input type="email" class="form-control" id="createEmail" name="Email" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="createCNPJ" class="form-label">CNPJ</label>
+						<input type="text" class="form-control" id="createCNPJ" name="CNPJ" required />
+					</div>
+
+					<div class="mb-3">
+						<label for="createImg" class="form-label">Imagem</label>
+						<input type="file" class="form-control" id="createImg" name="imgUp" accept="image/*" />
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<input type="submit" value="Criar" class="btn btn-primary w-25 m-2" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+@section Scripts {
+	<script>
+		//  delete Modal
+		var deleteModal = document.getElementById('deleteModal');
+		deleteModal.addEventListener('show.bs.modal', function (event) {
+			var button = event.relatedTarget;
+			var id = button.getAttribute('data-id');
+			var deleteIdInput = deleteModal.querySelector('#deleteId');
+			deleteIdInput.value = id;
+		});
+		//  Details Modal 
+		var detailsModal = document.getElementById('detailsModal');
+		detailsModal.addEventListener('show.bs.modal', function (event) {
+			var button = event.relatedTarget;
+			var nome = button.getAttribute('data-nome');
+			var telefone = button.getAttribute('data-telefone');
+			var email = button.getAttribute('data-email');
+			var cnpj = button.getAttribute('data-cnpj');
+			var imgSrc = button.getAttribute('data-img');
+
+			
+			detailsModal.querySelector('#planoNome').textContent = nome;
+			detailsModal.querySelector('#planoTelefone').textContent = telefone;
+			detailsModal.querySelector('#planoEmail').textContent = email;
+			detailsModal.querySelector('#planoCnpj').textContent = cnpj;
+			detailsModal.querySelector('#planoImagem').src = imgSrc;
+		});
+		var editPlanoModal = document.getElementById('editPlanoModal');
+		editPlanoModal.addEventListener('show.bs.modal', function (event) {
+			var button = event.relatedTarget;
+
+			// Captura os dados do plano de saúde para serem editados
+			var id = button.getAttribute('data-id');
+			var nome = button.getAttribute('data-nome');
+			var telefone = button.getAttribute('data-telefone');
+			var email = button.getAttribute('data-email');
+			var cnpj = button.getAttribute('data-cnpj');
+
+			// Preenche os campos do formulário com os valores capturados
+			document.getElementById('editPlanoId').value = id;
+			document.getElementById('editNome').value = nome;
+			document.getElementById('editTelefone').value = telefone;
+			document.getElementById('editEmail').value = email;
+			document.getElementById('editCNPJ').value = cnpj;
+
+			// Reseta o campo de upload de arquivo, pois não pode ser preenchido automaticamente
+			document.getElementById('editImg').value = "";
+
+			document.getElementById('formEditPlanoModal').addEventListener('submit', async function (event) {
+				event.preventDefault(); // Impede o comportamento padrão do formulário
+
+				const form = document.getElementById('formEditPlanoModal');
+				const formData = new FormData(form); // Cria o objeto FormData com os dados do formulário
+
+				try {
+					const response = await fetch(form.action, {
+						method: 'POST',
+						body: formData
+					});
+					if (response.ok) {
+						// Se a atualização foi bem-sucedida, fecha a modal
+						$('#editPlanoModal').modal('hide');
+						// Atualize a lista de planos de saúde na página, se necessário
+						location.reload(); // ou use uma função para atualizar a lista dinamicamente
+					} else {
+						alert('Erro ao atualizar o plano de saúde.');
+					}
+				} catch (error) {
+					console.error('Erro:', error);
+					alert('Erro ao atualizar o plano de saúde.');
+				}
+			});
+		});
+		document.addEventListener('DOMContentLoaded', function () {
+			const createPlanoModal = document.getElementById('createPlanoModal');
+			const formCreatePlanoModal = document.getElementById('formCreatePlanoModal');
+
+			// Quando a modal é aberta, resetar o formulário
+			createPlanoModal.addEventListener('show.bs.modal', function () {
+				formCreatePlanoModal.reset();
+			});
+
+			// Opcional: Quando o formulário for enviado, fechar a modal
+			formCreatePlanoModal.addEventListener('submit', function (event) {
+				event.preventDefault(); // Evita o envio duplo do formulário
+
+				// Envio manual do formulário
+				const formData = new FormData(formCreatePlanoModal);
+
+				fetch('/PlanoDeSaudeModels/Create', {
+					method: 'POST',
+					body: formData
+				})
+					.then(response => {
+						if (response.ok) {
+							// Fechar a modal após o envio bem-sucedido
+							const modalInstance = bootstrap.Modal.getInstance(createPlanoModal);
+							modalInstance.hide();
+
+							// Opcional: Atualizar a lista ou redirecionar
+							location.reload();
+						} else {
+							// Tratar erro
+							alert("Erro ao criar o plano de saúde.");
+						}
+					})
+					.catch(error => {
+						console.error('Erro:', error);
+						alert("Ocorreu um erro ao enviar o formulário.");
+					});
+			});
+		});
+
+	</script>
+
 }
-</div>
-</div>

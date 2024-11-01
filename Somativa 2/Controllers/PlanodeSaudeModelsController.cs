@@ -163,104 +163,76 @@ namespace Somativa_2.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(Guid id, [Bind("PlanodeSaudeId,Nome,Telefone,CNPJ,Email")] PlanodeSaudeModel planodeSaudeModel, IFormFile imgUp)
 		{
-			if (id != planodeSaudeModel.PlanodeSaudeId)
+			// Verifica a existência do plano de saúde antes de atribuir `id`
+			var existingPlan = await _context.PlanodeSaude.FindAsync(planodeSaudeModel.PlanodeSaudeId);
+			if (existingPlan == null)
 			{
-				return NotFound();
-			}
-			// Verifica se já existe uma imagem associada ao usuário
-			var planodeSaudeModel2 = await _context.PlanodeSaude.FindAsync(id);
-			if (planodeSaudeModel2 == null)
-			{
-				return NotFound();
+				return Json(new { success = false, message = "Plano de Saúde não encontrado." });
 			}
 
-			// Se uma nova imagem foi carregada, excluir a antiga e salvar a nova
 			if (imgUp != null && imgUp.Length > 0)
 			{
-				// Se houver uma ImagemPerfil existente, excluí-la
-				if (!string.IsNullOrEmpty(planodeSaudeModel2.img))
-				{
-					string existingFilePath = Path.Combine(_caminho, "img", planodeSaudeModel2.img);
-					if (System.IO.File.Exists(existingFilePath))
-					{
-						System.IO.File.Delete(existingFilePath);
-					}
-				}
-
-				// Salvar a nova imagem
-				string uploadsFolder = Path.Combine(_caminho, "img");
-				if (!Directory.Exists(uploadsFolder))
-				{
-					Directory.CreateDirectory(uploadsFolder);
-				}
-
-				string uniqueFileName = Guid.NewGuid().ToString() + "_" + imgUp.FileName;
-				string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-				using (var fileStream = new FileStream(filePath, FileMode.Create))
-				{
-					await imgUp.CopyToAsync(fileStream);
-				}
-
-				planodeSaudeModel2.img = uniqueFileName;
+				await ProcessImageUploadAsync(existingPlan, imgUp);
 			}
 
-
-			// Atualiza as informações do usuário
 			if (ModelState.IsValid)
 			{
 				try
 				{
-					planodeSaudeModel2.Nome = planodeSaudeModel.Nome;
-					planodeSaudeModel2.Telefone = planodeSaudeModel.Telefone;
-					planodeSaudeModel2.CNPJ = planodeSaudeModel.CNPJ;
-					planodeSaudeModel2.Email = planodeSaudeModel.Email;
+					existingPlan.Nome = planodeSaudeModel.Nome;
+					existingPlan.Telefone = planodeSaudeModel.Telefone;
+					existingPlan.CNPJ = planodeSaudeModel.CNPJ;
+					existingPlan.Email = planodeSaudeModel.Email;
 
-					_context.Update(planodeSaudeModel2);
+					_context.Update(existingPlan);
 					await _context.SaveChangesAsync();
+
+					return Json(new { success = true, message = "Plano de Saúde atualizado com sucesso." });
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!PlanodeSaudeModelExists(planodeSaudeModel2.PlanodeSaudeId))
+					if (!PlanodeSaudeModelExists(existingPlan.PlanodeSaudeId))
 					{
-						return NotFound();
+						return Json(new { success = false, message = "Plano de Saúde não encontrado." });
 					}
 					else
 					{
 						throw;
 					}
 				}
-
-				_context.Update(planodeSaudeModel2);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
 			}
 
-			return View(planodeSaudeModel2);
-
-			//if (ModelState.IsValid)
-			//{
-			//    try
-			//    {
-			//        _context.Update(planodeSaudeModel);
-			//        await _context.SaveChangesAsync();
-			//    }
-			//    catch (DbUpdateConcurrencyException)
-			//    {
-			//        if (!PlanodeSaudeModelExists(planodeSaudeModel.PlanodeSaudeId))
-			//        {
-			//            return NotFound();
-			//        }
-			//        else
-			//        {
-			//            throw;
-			//        }
-			//    }
-			//    return RedirectToAction(nameof(Index));
-			//}
+			return Json(new { success = false, message = "Erro ao atualizar o plano de saúde." });
 		}
 
-		// GET: PlanodeSaudeModels/Delete/5
+		private async Task ProcessImageUploadAsync(PlanodeSaudeModel existingPlan, IFormFile imgUp)
+		{
+			// Remove imagem antiga se existir
+			if (!string.IsNullOrEmpty(existingPlan.img))
+			{
+				string existingFilePath = Path.Combine(_caminho, "img", existingPlan.img);
+				if (System.IO.File.Exists(existingFilePath))
+				{
+					System.IO.File.Delete(existingFilePath);
+				}
+			}
+
+			// Define novo caminho e salva nova imagem
+			string uploadsFolder = Path.Combine(_caminho, "img");
+			Directory.CreateDirectory(uploadsFolder);
+
+			string uniqueFileName = $"{Guid.NewGuid()}_{imgUp.FileName}";
+			string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+			using (var fileStream = new FileStream(filePath, FileMode.Create))
+			{
+				await imgUp.CopyToAsync(fileStream);
+			}
+
+			existingPlan.img = uniqueFileName;
+		}
+
+
 		public async Task<IActionResult> Delete(Guid? id)
 		{
 			if (id == null || _context.PlanodeSaude == null)
@@ -285,11 +257,12 @@ namespace Somativa_2.Controllers
 		{
 			if (_context.PlanodeSaude == null)
 			{
-				return Problem("Entity set 'SprintContext.PlanodeSaude'  is null.");
+				return Problem("Entity set 'SprintContext.PlanodeSaude' is null.");
 			}
+
 			var planodeSaudeModel = await _context.PlanodeSaude.FindAsync(id);
 
-			if (planodeSaudeModel.img != null && planodeSaudeModel.img.Length > 0)
+			if (planodeSaudeModel?.img != null && planodeSaudeModel.img.Length > 0)
 			{
 				string uploadsFolder = Path.Combine(_caminho, "img");
 
@@ -300,20 +273,21 @@ namespace Somativa_2.Controllers
 
 				string filePath = Path.Combine(uploadsFolder, planodeSaudeModel.img);
 
-
 				if (System.IO.File.Exists(filePath))
 				{
 					System.IO.File.Delete(filePath);
 				}
 			}
+
 			if (planodeSaudeModel != null)
 			{
 				_context.PlanodeSaude.Remove(planodeSaudeModel);
+				await _context.SaveChangesAsync();
 			}
 
-			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
+
 
 		private bool PlanodeSaudeModelExists(Guid id)
 		{

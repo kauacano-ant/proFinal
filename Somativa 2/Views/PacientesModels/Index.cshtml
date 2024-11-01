@@ -10,59 +10,34 @@
     <a asp-action="Create">Create New</a>
 </p>
 <p class="m-3 text-center" style="font-size:20px">Sua saúde é o nosso maior compromisso. Com o Viva+, você e sua família contam com uma rede completa de profissionais e serviços dedicados ao seu bem-estar.</p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CPF)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RG)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Data_de_nascimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Endereco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlanodeSaude)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.CPF)</th>
+            <th>@Html.DisplayNameFor(model => model.RG)</th>
+            <th>@Html.DisplayNameFor(model => model.Data_de_nascimento)</th>
+            <th>@Html.DisplayNameFor(model => model.Endereco)</th>
+            <th>@Html.DisplayNameFor(model => model.Telefone)</th>
+            <th>@Html.DisplayNameFor(model => model.PlanodeSaude)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CPF)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RG)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Data_de_nascimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Endereco)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefone)
-            </td>
-            <td>
-                    <img src="~/img/@item.PlanodeSaude.img" alt="Imagem da Notícia" style="width: 50px; height:50px ;border-radius:10px;display:flex;" />
-            </td>
-            <td>
-               
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.CPF)</td>
+                <td>@Html.DisplayFor(modelItem => item.RG)</td>
+                <td>@Html.DisplayFor(modelItem => item.Data_de_nascimento)</td>
+                <td>@Html.DisplayFor(modelItem => item.Endereco)</td>
+                <td>@Html.DisplayFor(modelItem => item.Telefone)</td>
+                <td>
+                    <img src="~/img/@item.PlanodeSaude.img" alt="Imagem da Notícia" style="width: 50px; height:50px; border-radius:10px; display:flex;" />
+                </td>
+                <td>
                     <div class="d-flex">
                         <div class="m-2">
                             <a asp-action="Details" asp-route-id="@item.PacienteId">
@@ -72,15 +47,49 @@
                             </a>
                         </div>
                         <div class="m-2">
-                            <a asp-action="Delete" asp-route-id="@item.PacienteId">
+                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.PacienteId">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" color="#157EBB" height="25" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                     <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
                                 </svg>
-                            </a>
+                            </button>
                         </div>
-                     </div>
-            </td>
-        </tr>
-}
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" id="deleteId" name="id" value="" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var deleteIdInput = deleteModal.querySelector('#deleteId');
+            deleteIdInput.value = id;
+        });
+    </script>
+}

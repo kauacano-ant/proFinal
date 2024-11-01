@@ -252,42 +252,83 @@ namespace Somativa_2.Controllers
 		// GET: PacientesModels/Delete/5
 		public async Task<IActionResult> Delete(Guid? id)
 		{
-			if (id == null || _context.Paciente == null)
+			if (id == null)
 			{
-				return NotFound();
+				return NotFound("ID do paciente não fornecido.");
+			}
+
+			if (_context.Paciente == null)
+			{
+				return Problem("Entity set 'SprintContext.Paciente' is null.");
 			}
 
 			var pacientesModel = await _context.Paciente
-				.Include(p => p.PlanodeSaude)
+				.Include(p => p.PlanodeSaude) // Inclua apenas se necessário
 				.FirstOrDefaultAsync(m => m.PacienteId == id);
+
 			if (pacientesModel == null)
 			{
-				return NotFound();
+				return NotFound("Paciente não encontrado.");
 			}
 
 			return View(pacientesModel);
 		}
 
-		// POST: PacientesModels/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(Guid id)
-		{
-			if (_context.Paciente == null)
-			{
-				return Problem("Entity set 'SprintContext.Paciente'  is null.");
-			}
-			var pacientesModel = await _context.Paciente.FindAsync(id);
-			if (pacientesModel != null)
-			{
-				_context.Paciente.Remove(pacientesModel);
-			}
+        // POST: PacientesModels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        // POST: PacientesModels/Delete/5
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            if (_context.Paciente == null)
+            {
+                return Problem("Entity set 'SprintContext.Paciente' is null.");
+            }
 
-			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
-		}
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Busca o paciente pelo ID
+                var pacientesModel = await _context.Paciente.FindAsync(id);
+                if (pacientesModel == null)
+                {
+                    return NotFound("Paciente não encontrado.");
+                }
 
-		private bool PacientesModelExists(Guid id)
+                // Remove as consultas relacionadas ao paciente
+                var consultasRelacionadas = await _context.Consultas
+                    .Where(c => c.PacienteId == id)
+                    .ToListAsync();
+                _context.Consultas.RemoveRange(consultasRelacionadas);
+
+                // Remove a imagem associada ao paciente, se existir
+                if (!string.IsNullOrEmpty(pacientesModel.img))
+                {
+                    string uploadsFolder = Path.Combine(_caminho, "img");
+                    string filePath = Path.Combine(uploadsFolder, pacientesModel.img);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
+                // Remove o paciente
+                _context.Paciente.Remove(pacientesModel);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return Problem("Ocorreu um erro ao excluir o paciente: " + ex.Message);
+            }
+        }
+
+
+
+        private bool PacientesModelExists(Guid id)
 		{
 			return (_context.Paciente?.Any(e => e.PacienteId == id)).GetValueOrDefault();
 		}

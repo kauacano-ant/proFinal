@@ -218,8 +218,9 @@ namespace Somativa_2.Migrations
                         .HasForeignKey("ConsultorioId");
 
                     b.HasOne("Somativa_2.Models.PacientesModel", "Pacientes")
-                        .WithMany()
-                        .HasForeignKey("PacienteId");
+                        .WithMany("Consultas")
+                        .HasForeignKey("PacienteId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Consultorio");
 
@@ -249,7 +250,7 @@ namespace Somativa_2.Migrations
             modelBuilder.Entity("Somativa_2.Models.PacientesModel", b =>
                 {
                     b.HasOne("Somativa_2.Models.PlanodeSaudeModel", "PlanodeSaude")
-                        .WithMany()
+                        .WithMany("Pacientes")
                         .HasForeignKey("PlanodeSaudeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -260,6 +261,16 @@ namespace Somativa_2.Migrations
             modelBuilder.Entity("Somativa_2.Models.Categ", b =>
                 {
                     b.Navigation("Consultorios");
+                });
+
+            modelBuilder.Entity("Somativa_2.Models.PacientesModel", b =>
+                {
+                    b.Navigation("Consultas");
+                });
+
+            modelBuilder.Entity("Somativa_2.Models.PlanodeSaudeModel", b =>
+                {
+                    b.Navigation("Pacientes");
                 });
 #pragma warning restore 612, 618
         }
